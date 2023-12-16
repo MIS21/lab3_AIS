@@ -108,7 +108,7 @@ public:
      
             else if (request.getMethod() == Poco::Net::HTTPRequest::HTTP_POST)
             {
-                if (form.has("first_name")) 
+                if (form.has("owner_id")) 
                 {
                     database::Cart cart;
                     cart.owner_id() = std::stol(form.get("owner_id"));

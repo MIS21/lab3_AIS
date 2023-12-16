@@ -59,7 +59,8 @@ public:
             hasSubstr(request.getURI(),"/search") ||
             hasSubstr(request.getURI(),"/auth")) 
             return new UserHandler(_format);
-         if (hasSubstr(request.getURI(),"/cart_by_owner"))
+         if (hasSubstr(request.getURI(),"/cart_by_owner") || 
+         hasSubstr(request.getURI(),"/create_cart"))
             return new CartHandler(_format);
         return 0;
     }

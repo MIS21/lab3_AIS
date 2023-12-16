@@ -52,6 +52,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /create_cart:
     post:
       summary: Создание корзины
       parameters:
