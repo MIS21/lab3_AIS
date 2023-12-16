@@ -46,17 +46,23 @@ services:
     depends_on:
       mai-db-node-ex01:
         condition: service_healthy
-  # other_server:
-  #   build:
-  #     context: other_server
-  #     dockerfile: Dockerfile
-  #   container_name: other_server
-  #   environment:
-  #     - SERVICE_HOST=my_service
-  #   ports:
-  #     - 8081:8081
-  #   networks:
-  #     - arch-network
+
+  other_server:
+    build:
+      context: other_server
+      dockerfile: Dockerfile
+    container_name: other_server
+    environment:
+      - DB_HOST=mai-db-node-ex01
+      - DB_PORT=3306
+      - DB_LOGIN=stud
+      - DB_PASSWORD=stud
+      - DB_DATABASE=archdb
+
+    ports:
+      - 8081:8081
+    networks:
+      - arch-network
 
 volumes:
   db-node-ex01-data:
