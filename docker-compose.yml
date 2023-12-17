@@ -30,9 +30,9 @@ services:
 
   my_service:
     build:
-      context: my_service
+      context: user_service
       dockerfile: Dockerfile
-    container_name: my_service
+    container_name: user_service
     environment:
       - DB_HOST=mai-db-node-ex01
       - DB_PORT=3306
@@ -49,9 +49,9 @@ services:
 
   other_server:
     build:
-      context: other_server
+      context: cart_service
       dockerfile: Dockerfile
-    container_name: other_server
+    container_name: cart_service
     environment:
       - DB_HOST=mai-db-node-ex01
       - DB_PORT=3306

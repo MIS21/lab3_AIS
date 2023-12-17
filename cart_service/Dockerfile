@@ -6,4 +6,4 @@ RUN git clone -b poco-1.11.7-release https://github.com/pocoproject/poco.git && 
 RUN git clone https://github.com/MIS21/lab2_AIS.git
 RUN sudo ldconfig
 RUN cd hl_mai_lab_01 && mkdir build && cd build && cmake  .. && make
-ENTRYPOINT [ "hl_mai_lab_01/build/other_service" ]
+ENTRYPOINT [ "hl_mai_lab_01/build/cart_service" ]

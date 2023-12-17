@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.2)
 project(hl_server C CXX)
 
 SET (EXAMPLE_BINARY "hl_mai_lab_01")
-SET (OTHER_SERVICE "other_service")
+SET (OTHER_SERVICE "cart_service")
 
 find_package(OpenSSL)
 find_package(Threads)

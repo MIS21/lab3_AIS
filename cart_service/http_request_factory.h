@@ -38,9 +38,23 @@ using Poco::Util::OptionSet;
 using Poco::Util::OptionCallback;
 using Poco::Util::HelpFormatter;
 
-#include "handlers/user_handler.h"
 
+#include "handlers/cart_handler.h"
 
+static bool hasSubstr(const std::string &str, const std::string &substr)
+{
+    if (str.size() < substr.size())
+        return false;
+    for (size_t i = 0; i <= str.size() - substr.size(); ++i)
+    {
+        bool ok{true};
+        for (size_t j = 0; ok && (j < substr.size()); ++j)
+            ok = (str[i + j] == substr[j]);
+        if (ok)
+            return true;
+    }
+    return false;
+}
 
 class HTTPRequestFactory: public HTTPRequestHandlerFactory
 {
@@ -54,11 +68,9 @@ public:
         const HTTPServerRequest& request)
     {
 
-        std::cout << "request:" << request.getURI()<< std::endl;
-        if (hasSubstr(request.getURI(),"/user") ||
-            hasSubstr(request.getURI(),"/search") ||
-            hasSubstr(request.getURI(),"/auth")) 
-            return new UserHandler(_format);
+         if (hasSubstr(request.getURI(),"/cart_by_owner") || 
+         hasSubstr(request.getURI(),"/create_cart"))
+            return new CartHandler(_format);
         return 0;
     }
 
