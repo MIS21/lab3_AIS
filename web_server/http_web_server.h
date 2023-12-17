@@ -56,4 +56,20 @@ public:
         return Application::EXIT_OK;
     }
 };
+
+    class HTTPOtherWebServer : public Poco::Util::ServerApplication
+    {
+    public:
+        int main([[maybe_unused]] const std::vector<std::string> &args)
+        {
+
+            ServerSocket svs(Poco::Net::SocketAddress("0.0.0.0", 8081));
+            HTTPServer srv(new HTTPRequestFactory(DateTimeFormat::SORTABLE_FORMAT), svs, new HTTPServerParams);
+            srv.start();
+            waitForTerminationRequest();
+            srv.stop();
+
+            return Application::EXIT_OK;
+        }
+    };
 #endif // !HTTPWEBSERVER
