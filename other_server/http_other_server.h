@@ -82,6 +82,8 @@ using Poco::Util::ServerApplication;
 #include <string>
 #include <fstream>
 
+#include "../database/user.h"
+#include "../database/cart.h"
 #include "../web_server/http_request_factory.h"
 #include <optional>
 #include "../helper.h"

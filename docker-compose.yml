@@ -58,11 +58,13 @@ services:
       - DB_LOGIN=stud
       - DB_PASSWORD=stud
       - DB_DATABASE=archdb
-
     ports:
       - 8081:8081
     networks:
       - arch-network
+    depends_on:
+      mai-db-node-ex01:
+        condition: service_healthy
 
 volumes:
   db-node-ex01-data:

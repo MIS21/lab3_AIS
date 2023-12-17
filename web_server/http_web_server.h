@@ -39,6 +39,7 @@ using Poco::Util::ServerApplication;
 
 #include "http_request_factory.h"
 #include "../database/user.h"
+#include "../database/cart.h"
 
 class HTTPWebServer : public Poco::Util::ServerApplication
 {
