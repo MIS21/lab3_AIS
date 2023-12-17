@@ -28,7 +28,7 @@ services:
     volumes:
       - db-node-ex01-data:/var/lib/mysql
 
-  my_service:
+  user_service:
     build:
       context: user_service
       dockerfile: Dockerfile
@@ -42,12 +42,12 @@ services:
     ports:
       - 8080:8080
     networks:
-      - arch-network
+      - arch-networks
     depends_on:
       mai-db-node-ex01:
         condition: service_healthy
 
-  other_server:
+  cart_service:
     build:
       context: cart_service
       dockerfile: Dockerfile
