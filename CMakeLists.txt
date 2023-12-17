@@ -26,7 +26,9 @@ SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(${EXAMPLE_BINARY} main.cpp 
                                  config/config.cpp 
                                  database/database.cpp
-                                 database/user.cpp)
+                                 database/user.cpp
+                                 database/cart.cpp
+                                 )
 
 
 target_include_directories(${EXAMPLE_BINARY} PRIVATE "${CMAKE_BINARY_DIR}")
@@ -49,6 +51,7 @@ add_executable(${OTHER_SERVICE} other_main.cpp
                                 config/config.cpp 
                                  database/database.cpp
                                  database/cart.cpp
+                                 database/user.cpp
 )
 target_include_directories(${OTHER_SERVICE} PRIVATE "${CMAKE_BINARY_DIR}")
 target_compile_options(${OTHER_SERVICE} PRIVATE -Wall -Wextra -pedantic -Werror )

@@ -82,9 +82,10 @@ using Poco::Util::ServerApplication;
 #include <string>
 #include <fstream>
 
+#include "../web_server/http_request_factory.h"
 #include <optional>
 #include "../helper.h"
-
+/*
 class OtherHandler : public HTTPRequestHandler
 {
 
@@ -158,7 +159,7 @@ public:
 
             if (std::getenv("SERVICE_HOST") != nullptr)
                 host = std::getenv("SERVICE_HOST");
-            url = "http://" + host + ":8080/auth";
+            url = "http://" + host + ":8081/auth";
 
             if (do_get(url, login, password)) // do authentificate
             {
@@ -205,7 +206,7 @@ public:
 
 private:
     std::string _format;
-};
+};*/
 
 class HTTPOtherWebServer : public Poco::Util::ServerApplication
 {
@@ -214,7 +215,7 @@ public:
     {
 
         ServerSocket svs(Poco::Net::SocketAddress("0.0.0.0", 8081));
-        HTTPServer srv(new HTTPOtherRequestFactory(DateTimeFormat::SORTABLE_FORMAT), svs, new HTTPServerParams);
+        HTTPServer srv(new HTTPRequestFactory(DateTimeFormat::SORTABLE_FORMAT), svs, new HTTPServerParams);
         srv.start();
         waitForTerminationRequest();
         srv.stop();
