@@ -1,5 +1,5 @@
-#ifndef HTTPREQUESTFACTORY_H
-#define HTTPREQUESTFACTORY_H
+#ifndef ITEMHTTPWEBSERVER_H
+#define ITEMHTTPWEBSERVER_H
 
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
@@ -18,48 +18,42 @@
 #include "Poco/Util/Option.h"
 #include "Poco/Util/OptionSet.h"
 #include "Poco/Util/HelpFormatter.h"
-#include <iostream>
 
-using Poco::Net::ServerSocket;
+using Poco::DateTimeFormat;
+using Poco::DateTimeFormatter;
+using Poco::ThreadPool;
+using Poco::Timestamp;
 using Poco::Net::HTTPRequestHandler;
 using Poco::Net::HTTPRequestHandlerFactory;
 using Poco::Net::HTTPServer;
+using Poco::Net::HTTPServerParams;
 using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
-using Poco::Net::HTTPServerParams;
-using Poco::Timestamp;
-using Poco::DateTimeFormatter;
-using Poco::DateTimeFormat;
-using Poco::ThreadPool;
-using Poco::Util::ServerApplication;
+using Poco::Net::ServerSocket;
 using Poco::Util::Application;
-using Poco::Util::Option;
-using Poco::Util::OptionSet;
-using Poco::Util::OptionCallback;
 using Poco::Util::HelpFormatter;
+using Poco::Util::Option;
+using Poco::Util::OptionCallback;
+using Poco::Util::OptionSet;
+using Poco::Util::ServerApplication;
 
+#include "http_request_factory.h"
+#include "../database/cart.h"
 
-#include "handlers/cart_handler.h"
-
-
-class HTTPRequestFactory: public HTTPRequestHandlerFactory
+class ItemHTTPWebServer : public Poco::Util::ServerApplication
 {
 public:
-    HTTPRequestFactory(const std::string& format):
-        _format(format)
+    int main([[maybe_unused]] const std::vector<std::string> &args)
     {
+            database::Cart::init();
+            ServerSocket svs(Poco::Net::SocketAddress("0.0.0.0", 8082));
+            HTTPServer srv(new HTTPRequestFactory(DateTimeFormat::SORTABLE_FORMAT), svs, new HTTPServerParams);
+            srv.start();
+            waitForTerminationRequest();
+            srv.stop();
+
+        return Application::EXIT_OK;
     }
-
-    HTTPRequestHandler* createRequestHandler()
-        //const HTTPServerRequest& request)
-    {
-
-        return new CartHandler(_format);
-        return 0;
-    }
-
-private:
-    std::string _format;
 };
 
-#endif
+#endif // !ITEMHTTPWEBSERVER

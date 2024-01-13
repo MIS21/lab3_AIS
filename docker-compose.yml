@@ -42,7 +42,26 @@ services:
     ports:
       - 8080:8080
     networks:
-      - arch-networks
+      - arch-network
+    depends_on:
+      mai-db-node-ex01:
+        condition: service_healthy
+
+  item_service:
+    build:
+      context: item_service
+      dockerfile: Dockerfile
+    container_name: item_service
+    environment:
+      - DB_HOST=mai-db-node-ex01
+      - DB_PORT=3306
+      - DB_LOGIN=stud
+      - DB_PASSWORD=stud
+      - DB_DATABASE=archdb
+    ports:
+      - 8082:8082
+    networks:
+      - arch-network
     depends_on:
       mai-db-node-ex01:
         condition: service_healthy

@@ -1,5 +1,5 @@
-#ifndef AUTHOR_H
-#define AUTHOR_H
+#ifndef USER_H
+#define USER_H
 
 #include <string>
 #include <vector>

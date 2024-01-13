@@ -5,5 +5,5 @@ RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install tzdata git sudo
 RUN git clone -b poco-1.11.7-release https://github.com/pocoproject/poco.git && cd poco && mkdir cmake-build && cd cmake-build && cmake .. && make && sudo make install && cd .. && cd ..
 RUN git clone https://github.com/MIS21/lab2_AIS.git
 RUN sudo ldconfig
-RUN cd hl_mai_lab_01 && mkdir build && cd build && cmake  .. && make
-ENTRYPOINT [ "hl_mai_lab_01/build/cart_service" ]
+RUN cd lab2_AIS && mkdir build && cd build && cmake  .. && make
+ENTRYPOINT [ "lab2_AIS/build/cart_service" ]
