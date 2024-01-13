@@ -50,10 +50,10 @@ public:
     {
     }
 
-    HTTPRequestHandler* createRequestHandler()
-        //const HTTPServerRequest& request)
+    HTTPRequestHandler* createRequestHandler(
+        const HTTPServerRequest& request)
     {
-
+        std::cout << "request:" << request.getURI()<< std::endl;
         return new CartHandler(_format);
         return 0;
     }
