@@ -6,4 +6,4 @@ RUN git clone -b poco-1.12.4-release https://github.com/pocoproject/poco.git && 
 RUN git clone  https://github.com/MIS21/lab2_AIS.git
 RUN sudo ldconfig
 RUN cd lab2_AIS && mkdir build && cd build && cmake  .. && make
-ENTRYPOINT [ "lab2_AIS/build/user_service" ]
+ENTRYPOINT [ "lab2_AIS/build/hl_mai_lab_01" ]
