@@ -46,6 +46,20 @@ using Poco::Util::ServerApplication;
 #include "../../database/cart.h"
 #include "../../helper.h"
 
+static bool hasSubstr(const std::string &str, const std::string &substr)
+{
+    if (str.size() < substr.size())
+        return false;
+    for (size_t i = 0; i <= str.size() - substr.size(); ++i)
+    {
+        bool ok{true};
+        for (size_t j = 0; ok && (j < substr.size()); ++j)
+            ok = (str[i + j] == substr[j]);
+        if (ok)
+            return true;
+    }
+    return false;
+}
 
 
 class CartHandler : public HTTPRequestHandler
@@ -62,7 +76,7 @@ public:
         HTMLForm form(request, request.stream());
         try
         {
-            if (form.has("owner_id") && (request.getMethod() == Poco::Net::HTTPRequest::HTTP_GET))
+            if (hasSubstr(request.getURI(), "/cart_by_owner") && (request.getMethod() == Poco::Net::HTTPRequest::HTTP_GET))
             {
                 long owner_id = atol(form.get("owner_id").c_str());
 
@@ -93,10 +107,8 @@ public:
                 }
             }
      
-            else if (request.getMethod() == Poco::Net::HTTPRequest::HTTP_POST)
+            else if (request.getMethod() == Poco::Net::HTTPRequest::HTTP_POST &&  hasSubstr(request.getURI(), "/create_cart"))
             {
-                if (form.has("owner_id")) 
-                {
                     database::Cart cart;
                     cart.owner_id() = std::stol(form.get("owner_id"));
                     cart.save_to_mysql();
@@ -106,9 +118,19 @@ public:
                     std::ostream &ostr = response.send();
                     ostr << cart.get_id();
                     return;
-             
-                }
             }
+             else if (request.getMethod() == Poco::Net::HTTPRequest::HTTP_POST &&  hasSubstr(request.getURI(), "/add_item"))
+             {
+                    database::Cart cart;
+                    cart.owner_id() = std::stol(form.get("owner_id"));
+                    cart.add_item(std::stol(form.get("owner_id")), std::stol(form.get("item_id")), std::stol(form.get("amount")));
+                    response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
+                    response.setChunkedTransferEncoding(true);
+                    response.setContentType("application/json");
+                    std::ostream &ostr = response.send();
+                    ostr << cart.owner_id();
+                    return;
+             }
         }
         catch (...)
         {

@@ -46,6 +46,18 @@ paths:
         required: true
         schema:
           type: string
+      - name: item_id
+        description: Создание корзины
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: amount
+        description: Количество товара
+        in: query
+        required: true
+        schema:
+          type: integer
       responses:
         '200':
           description: Идентификатор, добавленной корзины
@@ -65,6 +77,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /add_item:
+      post:
+        summary: Добавление товара в корзину
+        parameters:
+        - name: owner_id
+          description: Идентификатор владельца
+          in: query
+          required: true
+          schema:
+            type: string
+        responses:
+          '200':
+            description: Идентификатор, добавленной корзины
+            content:
+              application/json:
+                schema:
+                  type: integer
+          404:
+            description: Ошибка добавления корзины
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+          500:
+            description: Неожиданная ошибка
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
 components:
   schemas:
     cart_id:

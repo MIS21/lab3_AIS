@@ -27,7 +27,7 @@ namespace database
             static void init();
             static std::optional<Cart> read_by_id(long id);
             void save_to_mysql();
-            void add_item(long item_id, int amount);
+            void add_item(long owner_id, long item_id, int amount);
             Poco::JSON::Object::Ptr toJSON() const;
 
     };

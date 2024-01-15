@@ -48,6 +48,8 @@ using Poco::Util::ServerApplication;
 
 
 
+
+
 class ItemHandler : public HTTPRequestHandler
 {
 public:
@@ -62,53 +64,37 @@ public:
         HTMLForm form(request, request.stream());
         try
         {
-            if (form.has("owner_id") && (request.getMethod() == Poco::Net::HTTPRequest::HTTP_GET))
+            
+            if (request.getMethod() == Poco::Net::HTTPRequest::HTTP_POST)
             {
-                long owner_id = atol(form.get("owner_id").c_str());
+                    database::Item item;
+                    item.name() = form.get("name");
+                    item.type() = form.get("type");
+                    item.description() = form.get("description");
+                    item.price() = std::stol(form.get("price"));
+                    item.save_to_mysql();
+                    response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
+                    response.setChunkedTransferEncoding(true);
+                    response.setContentType("application/json");
+                    std::ostream &ostr = response.send();
+                    ostr << item.get_id();
+                    return;
+            }
+             else if (request.getMethod() == Poco::Net::HTTPRequest::HTTP_GET)
+             {
+                auto results = database::Item::read_all();
+                Poco::JSON::Array arr;
+                for (auto s : results)
+                    arr.add((s.toJSON()));
+                response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
+                response.setChunkedTransferEncoding(true);
+                response.setContentType("application/json");
+                std::ostream &ostr = response.send();
+                Poco::JSON::Stringifier::stringify(arr, ostr);
 
-                std::optional<database::Item> result = database::Item::read_by_id(owner_id);
-                if (result)
-                {
-                    response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
-                    response.setChunkedTransferEncoding(true);
-                    response.setContentType("application/json");
-                    std::ostream &ostr = response.send();
-                    Poco::JSON::Stringifier::stringify(result->toJSON(), ostr);
-                    return;
-                }
-                else
-                {
-                    response.setStatus(Poco::Net::HTTPResponse::HTTPStatus::HTTP_NOT_FOUND);
-                    response.setChunkedTransferEncoding(true);
-                    response.setContentType("application/json");
-                    Poco::JSON::Object::Ptr root = new Poco::JSON::Object();
-                    root->set("type", "/errors/not_found");
-                    root->set("title", "Internal exception");
-                    root->set("status", "404");
-                    root->set("detail", "Item not found");
-                    root->set("instance", "/Item");
-                    std::ostream &ostr = response.send();
-                    Poco::JSON::Stringifier::stringify(root, ostr);
-                    return;
-                }
-            }
-     
-            else if (request.getMethod() == Poco::Net::HTTPRequest::HTTP_POST)
-            {
-                if (form.has("owner_id")) 
-                {
-                    database::Item Item;
-                    //Item.owner_id() = std::stol(form.get("owner_id"));
-                    Item.save_to_mysql();
-                    response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
-                    response.setChunkedTransferEncoding(true);
-                    response.setContentType("application/json");
-                    std::ostream &ostr = response.send();
-                    ostr << Item.get_id();
-                    return;
-             
-                }
-            }
+                return;
+             }
+         
         }
         catch (...)
         {
