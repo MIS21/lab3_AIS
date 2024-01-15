@@ -40,7 +40,7 @@ using Poco::Util::ServerApplication;
 #include "http_request_factory.h"
 #include "../database/user.h"
 
-class HTTPWebServer : public Poco::Util::ServerApplication
+class UserHTTPWebServer : public Poco::Util::ServerApplication
 {
 public:
     int main([[maybe_unused]] const std::vector<std::string> &args)

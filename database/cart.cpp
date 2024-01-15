@@ -128,6 +128,31 @@ namespace database
         return {};
     }
 
+    void Cart::add_item(long item_id, int amount)
+    {
+         try
+        {
+            Poco::Data::Session session = database::Database::get().create_session();
+            Poco::Data::Statement insert(session);
+
+            insert << "INSERT INTO Cart_Item (cart_id, item_id, amount) VALUES(?, ?, ?)",
+                use(_id);
+                use(item_id),
+                use(amount);
+            insert.execute();
+        }
+            catch (Poco::Data::MySQL::ConnectionException &e)
+        {
+            std::cout << "connection:" << e.what() << std::endl;
+            throw;
+        }
+        catch (Poco::Data::MySQL::StatementException &e)
+        {
+
+            std::cout << "statement:" << e.what() << std::endl;
+            throw;
+        }
+    }
 
     void Cart::save_to_mysql()
     {

@@ -41,20 +41,7 @@ using Poco::Util::HelpFormatter;
 
 #include "handlers/item_handler.h"
 
-static bool hasSubstr(const std::string &str, const std::string &substr)
-{
-    if (str.size() < substr.size())
-        return false;
-    for (size_t i = 0; i <= str.size() - substr.size(); ++i)
-    {
-        bool ok{true};
-        for (size_t j = 0; ok && (j < substr.size()); ++j)
-            ok = (str[i + j] == substr[j]);
-        if (ok)
-            return true;
-    }
-    return false;
-}
+
 
 class HTTPRequestFactory: public HTTPRequestHandlerFactory
 {
@@ -67,7 +54,7 @@ public:
     HTTPRequestHandler* createRequestHandler(
         const HTTPServerRequest& request)
     {
-
+        std::cout << "request:" << request.getURI()<< std::endl;
         return new ItemHandler(_format);
         return 0;
     }
