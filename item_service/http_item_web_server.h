@@ -38,14 +38,14 @@ using Poco::Util::OptionSet;
 using Poco::Util::ServerApplication;
 
 #include "http_request_factory.h"
-#include "../database/cart.h"
+#include "../database/item.h"
 
 class ItemHTTPWebServer : public Poco::Util::ServerApplication
 {
 public:
     int main([[maybe_unused]] const std::vector<std::string> &args)
     {
-            database::Cart::init();
+            database::Item::init();
             ServerSocket svs(Poco::Net::SocketAddress("0.0.0.0", 8082));
             HTTPServer srv(new HTTPRequestFactory(DateTimeFormat::SORTABLE_FORMAT), svs, new HTTPServerParams);
             srv.start();
