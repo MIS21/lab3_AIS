@@ -29,7 +29,7 @@ namespace database
             create_stmt << "CREATE TABLE IF NOT EXISTS `Item` (`id` INT NOT NULL AUTO_INCREMENT,"
                         << "`name` VARCHAR(256) NOT NULL,"
                         << "`type` VARCHAR(256) NOT NULL,"
-                        << "`decription` TEXT NOT NULL,"
+                        << "`description` TEXT NOT NULL,"
                         << "`price` INT NOT NULL,"
                         << "PRIMARY KEY (`id`));",
                 now;
