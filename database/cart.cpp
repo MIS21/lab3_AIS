@@ -23,14 +23,14 @@ namespace database
     {
         try
         {
-
             Poco::Data::Session session = database::Database::get().create_session();
             Statement create_stmt(session);
             create_stmt << "CREATE TABLE IF NOT EXISTS `Cart` (`id` INT NOT NULL AUTO_INCREMENT,"
                         << "`owner_id` INT NOT NULL,"
-                        << "FOREIGN KEY ('owner_id')  REFERENCES 'User' ('id'),"
+                        << "FOREIGN KEY (`owner_id`) REFERENCES `User` (`id`),"
                         << "PRIMARY KEY (`id`));",
                 now;
+
         }
 
         catch (Poco::Data::MySQL::ConnectionException &e)
