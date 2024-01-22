@@ -12,7 +12,7 @@ paths:
       summary: Чтение информации о корзине
       parameters:
       - name: owner_id
-        description: Чтение информации о корзине
+        description: id владельца
         in: query
         required: true
         schema:
