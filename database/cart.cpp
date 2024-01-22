@@ -160,6 +160,7 @@ namespace database
 
         try
         {
+            std::cout << _owner_id << std::endl;
             Poco::Data::Session session = database::Database::get().create_session();
             Poco::Data::Statement insert(session);
 

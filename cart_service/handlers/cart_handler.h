@@ -111,6 +111,7 @@ public:
             {
                     database::Cart cart;
                     cart.owner_id() = std::stol(form.get("owner_id"));
+                    std::cout << cart.owner_id()<< std::endl;
                     cart.save_to_mysql();
                     response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
                     response.setChunkedTransferEncoding(true);

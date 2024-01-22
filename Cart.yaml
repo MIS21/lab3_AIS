@@ -11,19 +11,19 @@ paths:
     get:
       summary: Чтение информации о корзине
       parameters:
-      - name: cart_by_owner
+      - name: owner_id
         description: Чтение информации о корзине
         in: query
         required: true
         schema:
-          $ref: '#/components/schemas/cart_id'
+          type: integer
       responses:
         '200':
           description: Найденная корзина
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/cart'
+                type: string
         404:
           description: Корзина не найдена
           content:
@@ -36,22 +36,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /create_cart:
+  /add_item:
     post:
-      summary: Создание корзины
+      summary: Добавление товара в корзину
       parameters:
       - name: owner_id
-        description: Создание корзины
+        description: id владельца корзины
         in: query
         required: true
         schema:
-          type: string
+          type: integer
       - name: item_id
-        description: Создание корзины
+        description: id товара
         in: query
         required: true
         schema:
-          type: string
+          type: integer
       - name: amount
         description: Количество товара
         in: query
@@ -60,13 +60,13 @@ paths:
           type: integer
       responses:
         '200':
-          description: Идентификатор, добавленной корзины
+          description: Идентификатор корзины
           content:
             application/json:
               schema:
                 type: integer
         404:
-          description: Ошибка добавления корзины
+          description: Ошибка добавления товара
           content:
             application/json:
               schema:
@@ -77,16 +77,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /add_item:
+  /create_cart:
       post:
-        summary: Добавление товара в корзину
+        summary: Создание корзины
         parameters:
         - name: owner_id
           description: Идентификатор владельца
           in: query
           required: true
           schema:
-            type: string
+            type: integer
         responses:
           '200':
             description: Идентификатор, добавленной корзины
