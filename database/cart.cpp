@@ -52,11 +52,12 @@ namespace database
             create_stmt << "CREATE TABLE IF NOT EXISTS `Cart_Item` (`id` INT NOT NULL AUTO_INCREMENT,"
                         << "`cart_id` INT NOT NULL,"
                         << "`item_id` INT NOT NULL,"
-                        << "'amount' INT NOT NULL,"
-                        << "FOREIGN KEY ('cart_id')  REFERENCES 'Cart' ('id'),"
-                        << "FOREIGN KEY ('item_id')  REFERENCES 'Item' ('id'),"
+                        << "`amount` INT NOT NULL,"
+                        << "FOREIGN KEY (`cart_id`)  REFERENCES `Cart` (`id`),"
+                        << "FOREIGN KEY (`item_id`)  REFERENCES `Item` (`id`),"
                         << "PRIMARY KEY (`id`));",
-                now;
+                        now;
+
         }
 
         catch (Poco::Data::MySQL::ConnectionException &e)
