@@ -161,7 +161,7 @@ namespace database
 
         try
         {
-            std::cout << _owner_id << "save to mysql" << std::endl;
+            std::cout << _owner_id << " save to mysql" << std::endl;
             Poco::Data::Session session = database::Database::get().create_session();
             Poco::Data::Statement insert(session);
 
@@ -208,12 +208,12 @@ namespace database
 
         long Cart::get_owner_id() const
     {
-        return _id;
+        return _owner_id;
     }
 
     long &Cart::owner_id()
     {
-        return _id;
+        return _owner_id;
     }
 
     
