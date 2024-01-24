@@ -136,7 +136,7 @@ namespace database
             Poco::Data::Session session = database::Database::get().create_session();
             Poco::Data::Statement insert(session);
             long cart_id = read_by_id(owner_id).value().get_owner_id();
-            std::cout << cart_id << "add_item" << std::endl;
+            std::cout << cart_id << "add_item" << item_id << "  " << amount << std::endl;
             insert << "INSERT INTO Cart_Item (cart_id, item_id, amount) VALUES(?, ?, ?)",
                 use(cart_id);
                 use(item_id),
