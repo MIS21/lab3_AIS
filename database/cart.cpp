@@ -138,7 +138,7 @@ namespace database
             long cart_id = read_by_id(owner_id).value().get_owner_id();
             std::cout << cart_id << "add_item" << item_id << "  " << amount << std::endl;
             insert << "INSERT INTO Cart_Item (cart_id, item_id, amount) VALUES(?, ?, ?)",
-                use(cart_id);
+                use(cart_id),
                 use(item_id),
                 use(amount);
             insert.execute();
@@ -150,7 +150,7 @@ namespace database
         }
         catch (Poco::Data::MySQL::StatementException &e)
         {
-
+            std::cout << "statement:" << e.message() << std::endl;
             std::cout << "statement:" << e.what() << std::endl;
             throw;
         }
