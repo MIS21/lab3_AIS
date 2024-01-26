@@ -1,4 +1,3 @@
-
 #include <optional>
 #include "cart_service/http_cart_web_server.h"
 

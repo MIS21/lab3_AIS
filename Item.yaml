@@ -7,7 +7,7 @@ servers:
   - url: http://localhost:8082
     description: item_service
 paths:
-   /read_all:
+  /read_all:
     get:
       summary: Вывод полного списка товаров
       responses:
@@ -29,6 +29,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /new_item:
     post:
 
       summary: Добавление нового товара
