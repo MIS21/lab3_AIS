@@ -44,7 +44,7 @@ namespace database
             static std::vector<User> read_all();
             static std::vector<User> search(std::string first_name,std::string last_name);
             void save_to_mysql();
-
+            static long get_max_id();
             Poco::JSON::Object::Ptr toJSON() const;
 
     };

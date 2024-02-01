@@ -5,5 +5,5 @@ RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y --fix-missing install t
 RUN git clone -b poco-1.11.7-release https://github.com/pocoproject/poco.git && cd poco && mkdir cmake-build && cd cmake-build && cmake .. && make && sudo make install && cd .. && cd ..
 RUN git clone  https://github.com/MIS21/lab2_AIS.git
 RUN sudo ldconfig
-RUN cd lab2_AIS && mkdir build && cd build && cmake  .. && make
-ENTRYPOINT [ "lab2_AIS/build/hl_mai_lab_01" ]
+RUN cd lab3_AIS && mkdir build && cd build && cmake  .. && make
+ENTRYPOINT [ "lab3_AIS/build/hl_mai_lab_01" ]
