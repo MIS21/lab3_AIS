@@ -24,7 +24,7 @@ namespace database{
 
     std::vector<std::string> Database::get_all_hints(){
         std::vector<std::string> result;
-        for(size_t i=0;i<=get_max_shard();++i){
+        for(size_t i=0;i<get_max_shard();++i){
             std::string shard_name = "-- sharding:";
             shard_name += std::to_string(i);
             result.push_back(shard_name);

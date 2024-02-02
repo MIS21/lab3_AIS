@@ -212,7 +212,6 @@ namespace database
             for (const std::string &hint : hints)
         {
             Statement select(session);
-            std::vector<User> result;
             User a;
             first_name += "%";
             last_name += "%";

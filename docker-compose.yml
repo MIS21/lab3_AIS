@@ -12,10 +12,11 @@ services:
       MYSQL_USER: stud
       MYSQL_PASSWORD: stud
       MYSQL_ROOT_PASSWORD: '1'
-    healthcheck:
-      test: "/usr/bin/mysql --user=stud --password=stud use archdb --execute \"CREATE SEQUENCE IF NOT EXISTS ids START WITH 1 INCREMENT BY 1;\""
-      timeout: 20s
-      retries: 5
+    command: >
+      bash -c "
+          /usr/bin/mysqld_safe --skip-grant-tables
+          mysql -u root -pexample -e \"USE archdb; CREATE SEQUENCE IF NOT EXISTS ids START WITH 1 INCREMENT BY 1;\"
+        "
     networks:
       - arch-network
     ports:
