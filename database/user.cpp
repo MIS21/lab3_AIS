@@ -163,9 +163,9 @@ namespace database
         std::vector<User> result;
         try
         {
+             Poco::Data::Session session = database::Database::get().create_session();
         for (const std::string &hint : hints)
-        {
-            Poco::Data::Session session = database::Database::get().create_session();
+        {  
             Statement select(session);
             User a;
             std::string select_str = "SELECT id, first_name, last_name, email, title, login, password FROM User";
@@ -208,9 +208,9 @@ namespace database
         std::vector<User> result;
         try
         {
+            Poco::Data::Session session = database::Database::get().create_session();
             for (const std::string &hint : hints)
         {
-            Poco::Data::Session session = database::Database::get().create_session();
             Statement select(session);
             std::vector<User> result;
             User a;
