@@ -12,8 +12,10 @@ services:
       MYSQL_USER: stud
       MYSQL_PASSWORD: stud
       MYSQL_ROOT_PASSWORD: '1'
-    command: >
-      --CREATE SEQUENCE ids START WITH 1 INCREMENT BY 1;
+    healthcheck:
+      test: "/usr/bin/mysql --user=stud --password=stud use archdb --execute \"CREATE SEQUENCE IF NOT EXISTS ids START WITH 1 INCREMENT BY 1;\""
+      timeout: 20s
+      retries: 5
     networks:
       - arch-network
     ports:

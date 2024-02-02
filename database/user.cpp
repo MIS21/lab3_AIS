@@ -257,7 +257,7 @@ namespace database
         long id;
         Poco::Data::Session session = database::Database::get().create_session();
         Poco::Data::Statement ids(session);
-        ids << "SELECT NEXTVAL(ids) -- sharding:1", 
+        ids << "SELECT NEXTVAL(ids) -- sharding:0", 
         Poco::Data::Keywords::into(id); 
         if(!ids.done())
             if(ids.execute())
