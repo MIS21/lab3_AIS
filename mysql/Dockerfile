@@ -1,9 +1,8 @@
-FROM mariadb
+FROM mariadb:10.10.4
 
-# Update and clean apt cache
+USER root
 RUN apt-get clean && apt-get update --fix-missing && \
-    # Install utils \
-    apt install -y --fix-missing nano ssh inetutils-ping net-tools htop telnet curl redis-tools ncdu rsync whois dnsutils git zip gosu wget percona-toolkit;
+    apt-get install -y nano ssh inetutils-ping net-tools htop telnet curl ncdu rsync whois dnsutils git zip gosu wget;
 
 # MySQL Custom Configs
 COPY my.cnf /etc/mysql/

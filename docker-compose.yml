@@ -12,10 +12,8 @@ services:
       MYSQL_USER: stud
       MYSQL_PASSWORD: stud
       MYSQL_ROOT_PASSWORD: '1'
-    # command: >
-    #   --sql-mode='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
-    #   --general-log=ON
-    #   --log-queries-not-using-indexes=ON
+    command: >
+      --CREATE SEQUENCE ids START WITH 1 INCREMENT BY 1;
     networks:
       - arch-network
     ports:
@@ -65,8 +63,6 @@ services:
       context: proxysql
       dockerfile: Dockerfile
     container_name: proxysql
-    command: >
-      --initial
     volumes:
       - proxysql-data:/var/lib/proxysql
     healthcheck:
@@ -92,8 +88,8 @@ services:
       dockerfile: Dockerfile
     container_name: user_service
     environment:
-      - DB_HOST=mai-db-node-ex01
-      - DB_PORT=3306
+      - DB_HOST=proxysql
+      - DB_PORT=6033
       - DB_LOGIN=stud
       - DB_PASSWORD=stud
       - DB_DATABASE=archdb
@@ -102,8 +98,7 @@ services:
     networks:
       - arch-network
     depends_on:
-      mai-db-node-ex01:
-        condition: service_healthy
+      - proxysql
 
   # item_service:
   #   build:

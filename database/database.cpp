@@ -32,13 +32,8 @@ namespace database{
         return result;
     }
 
-    std::string Database::sharding_user(std::string fname, std::string lname){
-        std::string key;
-        key = fname + lname;
-        size_t shard_number = std::hash<std::string>{}(key)%get_max_shard();
-        std::string result = "-- sharding:";
-        result += std::to_string(shard_number);
-        return result;
+    std::string Database::sharding_user(long id){
+        return "-- sharding:" + std::to_string(id % get_max_shard());
     }
 
     std::string Database::sharding_hint(long from, long to){

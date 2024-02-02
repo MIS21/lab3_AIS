@@ -120,16 +120,13 @@ namespace database
     }
     std::optional<User> User::read_by_id(long id)
     {
-        std::vector<std::string> hints = database::Database::get_all_hints();
         try
-        {
-            for (const std::string &hint : hints)
         {
             Poco::Data::Session session = database::Database::get().create_session();
             Poco::Data::Statement select(session);
             User a;
             std::string select_str = "SELECT id, first_name, last_name, email, title,login,password FROM User where id=?";
-            select_str += hint;
+            select_str += database::Database::sharding_user(id);
             select << select_str,
                 into(a._id),
                 into(a._first_name),
@@ -144,7 +141,6 @@ namespace database
             select.execute();
             Poco::Data::RecordSet rs(select);
             if (rs.moveFirst()) return a;
-        }
         }
 
         catch (Poco::Data::MySQL::ConnectionException &e)
@@ -255,41 +251,28 @@ namespace database
             throw;
         }
     }
-// определяем последний id по всем шардам
-    long User::get_max_id()
-    {
-        long max_id = 0;
-        std::vector<std::string> hints = database::Database::get_all_hints();
 
-        for (const std::string &hint : hints)
-        {
-            long max_shard_id;
-            Poco::Data::Session session = database::Database::get().create_session();
-                                         Statement select(session);
-                                         std::string select_str = "SELECT MAX(id) FROM User";
-                                         select_str += hint;
-                                         select << select_str,
-                                         into(max_shard_id),
-                                         range(0, 1);
-                                         
-                                         if (select.execute() && max_shard_id > max_id)
-                                         {
-                                            max_id = max_shard_id;
-                                         }
-            std:: cout<< max_id << std::endl;
-            
-        }
-        return max_id;
+    long User::get_next_id()
+    {
+        long id;
+        Poco::Data::Session session = database::Database::get().create_session();
+        Poco::Data::Statement ids(session);
+        ids << "SELECT NEXTVAL(ids) -- sharding:1", 
+        Poco::Data::Keywords::into(id); 
+        if(!ids.done())
+            if(ids.execute())
+                std::cout << "next_sequence:" << id << std::endl;
+        return id;
     }
     void User::save_to_mysql()
     {
 
         try
         {
-            long new_id = User::get_max_id() + 1;
+            long new_id = User::get_next_id();
             Poco::Data::Session session = database::Database::get().create_session();
             Poco::Data::Statement insert(session);
-            std::string sharding_hint = database::Database::sharding_user(_first_name, _last_name);
+            std::string sharding_hint = database::Database::sharding_user(new_id);
             std::string select_str = "INSERT INTO User (id,first_name,last_name,email,title,login,password) VALUES(?, ?, ?, ?, ?, ?, ?)";
             select_str += sharding_hint;
             std::cout << select_str << std::endl;
@@ -305,7 +288,7 @@ namespace database
             insert.execute();
 
             Poco::Data::Statement select(session);
-            std::string query =  "SELECT LAST_INSERT_ID() "+sharding_hint;
+            std::string query =  "SELECT LAST_INSERT_ID() " + sharding_hint;
             select << query,
                 into(_id),
                 range(0, 1); //  iterate over result set one row at a time
