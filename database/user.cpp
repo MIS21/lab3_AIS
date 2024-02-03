@@ -306,17 +306,7 @@ namespace database
 
             insert.execute();
 
-            Poco::Data::Statement select(session);
-            std::string query =  "SELECT LAST_INSERT_ID() " + sharding_hint;
-            select << query,
-                into(_id),
-                range(0, 1); //  iterate over result set one row at a time
-
-            if (!select.done())
-            {
-                select.execute();
-            }
-            std::cout << "inserted:" << _id << std::endl;
+            std::cout << "inserted:" << new_id << std::endl;
         }
         catch (Poco::Data::MySQL::ConnectionException &e)
         {
