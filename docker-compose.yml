@@ -13,10 +13,9 @@ services:
       MYSQL_PASSWORD: stud
       MYSQL_ROOT_PASSWORD: '1'
     command: >
-      bash -c "
-          /usr/bin/mysqld_safe --skip-grant-tables
-          mysql -u root -pexample -e \"USE archdb; CREATE SEQUENCE IF NOT EXISTS ids START WITH 1 INCREMENT BY 1;\"
-        "
+      --sql-mode='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
+      --general-log=ON
+      --log-queries-not-using-indexes=ON
     networks:
       - arch-network
     ports:
@@ -35,6 +34,10 @@ services:
       MYSQL_USER: stud
       MYSQL_PASSWORD: stud
       MYSQL_ROOT_PASSWORD: '1'
+    command: >
+      --sql-mode='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
+      --general-log=ON
+      --log-queries-not-using-indexes=ON
     networks:
       - arch-network
     ports:
@@ -53,6 +56,10 @@ services:
       MYSQL_USER: stud
       MYSQL_PASSWORD: stud
       MYSQL_ROOT_PASSWORD: '1'
+    command: >
+      --sql-mode='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
+      --general-log=ON
+      --log-queries-not-using-indexes=ON
     networks:
       - arch-network
     ports:
@@ -68,10 +75,6 @@ services:
     container_name: proxysql
     volumes:
       - proxysql-data:/var/lib/proxysql
-    healthcheck:
-      test: "/usr/bin/mysql --user=stud --password=stud --execute \"SHOW DATABASES;\""
-      timeout: 20s
-      retries: 5
     networks:
       - arch-network
     ports:
@@ -83,7 +86,6 @@ services:
       - db-node-1
       - db-node-2
       - db-node-3
-
 
   user_service:
     build:
@@ -102,6 +104,7 @@ services:
       - arch-network
     depends_on:
       - proxysql
+
 
   # item_service:
   #   build:

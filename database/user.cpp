@@ -54,6 +54,26 @@ namespace database
             std::cout << "statement:" << e.what() << std::endl;
             throw;
         }
+        try
+        {
+            Poco::Data::Session session = database::Database::get().create_session();
+            Statement create_stmt(session);
+            create_stmt << "CREATE SEQUENCE IF NOT EXISTS ids START WITH 1 INCREMENT BY 1; -- sharding:0",
+                now;
+                std::cout << create_stmt.toString() << std::endl;
+        }
+
+        catch (Poco::Data::MySQL::ConnectionException &e)
+        {
+            std::cout << "connection:" << e.what() << std::endl;
+            throw;
+        }
+        catch (Poco::Data::MySQL::StatementException &e)
+        {
+
+            std::cout << "statement:" << e.what() << std::endl;
+            throw;
+        }
     }
 
     Poco::JSON::Object::Ptr User::toJSON() const
